@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Exercises Class 11 (16&ndash;20) — A28-EBRS-11</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap");
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --navy:#1a2744;--navy-mid:#243460;--gold:#c8922a;
+    --ink:#1c1c1e;--ink-2:#3a3a3c;--ink-3:#6e6e73;--rule:#d4d4d8;
+    --bg:#f7f6f2;--white:#fff;--green:#1a6640;--green-lt:#e6f4ec;
+    --red:#8b1a1a;--red-lt:#faeaea;
+  }
+  body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding:0 0 4rem}
+
+  /* HEADER */
+  .exam-header{background:var(--navy);color:#fff;padding:1.75rem 2rem 1.5rem;position:relative}
+  .exam-header::after{content:"";position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--gold)}
+  .hinner{max-width:820px;margin:0 auto;display:grid;grid-template-columns:1fr auto;align-items:start;gap:1.5rem}
+  .etag{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+  .etitle{font-family:"Crimson Pro",Georgia,serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:600;line-height:1.2;margin-bottom:.3rem}
+  .esub{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:1rem}
+  .meta-row{display:flex;flex-wrap:wrap;gap:.5rem}
+  .mpill{font-size:.7rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:.2rem .65rem;color:rgba(255,255,255,.65)}
+  .hcode{text-align:right}
+  .code-box{border:2px solid rgba(255,255,255,.25);padding:.5rem .9rem;text-align:center}
+  .code-top{font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:.25rem}
+  .code-val{font-family:"Crimson Pro",serif;font-size:1.35rem;font-weight:600;color:var(--gold);letter-spacing:.04em}
+  .code-year{font-size:.65rem;color:rgba(255,255,255,.35);margin-top:.2rem}
+
+  /* PROGRESS */
+  .prog-wrap{max-width:820px;margin:1.2rem auto 0;padding:0 2rem}
+  .prog-top{display:flex;justify-content:space-between;font-size:.7rem;color:var(--ink-3);margin-bottom:.3rem}
+  .prog-track{height:4px;background:var(--rule);border-radius:2px;overflow:hidden}
+  .prog-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease}
+
+  /* DOTS */
+  .dots{max-width:820px;margin:.9rem auto 0;padding:0 2rem;display:flex;gap:.4rem}
+  .dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--rule);background:var(--white);font-size:.68rem;font-weight:600;color:var(--ink-3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+  .dot.active{border-color:var(--navy);background:var(--navy);color:#fff}
+  .dot.ok{border-color:var(--green);background:var(--green-lt);color:var(--green)}
+  .dot.fail{border-color:var(--red);background:var(--red-lt);color:var(--red)}
+
+  /* MAIN */
+  .main{max-width:820px;margin:1.5rem auto 0;padding:0 2rem}
+  .qcard{background:var(--white);border:1px solid var(--rule);border-radius:8px;overflow:hidden;display:none}
+  .qcard.active{display:block}
+
+  /* SITUATION */
+  .situation{background:#f0f3fa;border-left:4px solid var(--navy);border-radius:0 6px 6px 0;padding:1rem 1.1rem;margin:1.2rem 1.5rem 0;font-size:.875rem;line-height:1.72;color:var(--ink-2)}
+  .situation-label{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.55rem}
+  .situation p{margin-bottom:.5rem}
+  .situation p:last-child{margin-bottom:0}
+  .situation ul{margin:.35rem 0 .35rem 1.1rem}
+  .situation ul li{margin-bottom:.35rem}
+  .situation em{font-style:italic;color:var(--ink)}
+  .situation strong{font-weight:600;color:var(--ink)}
+
+  /* QUESTION */
+  .qhead{padding:1.3rem 1.5rem .85rem}
+  .qnum{font-size:.72rem;font-weight:600;color:var(--ink-3);margin-bottom:.45rem;letter-spacing:.03em}
+  .qstem{font-family:"Crimson Pro",Georgia,serif;font-size:1.07rem;line-height:1.65;color:var(--ink)}
+  .qstem strong{font-weight:600}
+  .qstem em{font-style:italic}
+
+  /* OPTIONS */
+  .qbody{padding:.85rem 1.5rem 1.3rem}
+  .opt{display:flex;align-items:flex-start;gap:.7rem;padding:.65rem .85rem;border:1.5px solid var(--rule);border-radius:5px;margin-bottom:.45rem;cursor:pointer;transition:border-color .15s,background .15s;user-select:none;width:100%;text-align:left;background:var(--white);font-family:"Inter",sans-serif}
+  .opt:last-of-type{margin-bottom:0}
+  .opt:hover:not(.locked){border-color:#7b9de8;background:#f0f3fa}
+  .opt.sel{border-color:var(--navy);background:#edf0f9}
+  .opt.cor{border-color:var(--green);background:var(--green-lt)}
+  .opt.wrg{border-color:var(--red);background:var(--red-lt)}
+  .opt.locked{cursor:default}
+  .obadge{flex-shrink:0;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--rule);font-size:.7rem;font-weight:700;color:var(--ink-3);display:flex;align-items:center;justify-content:center;margin-top:.1rem;transition:all .15s}
+  .opt.sel .obadge{border-color:var(--navy);color:var(--navy)}
+  .opt.cor .obadge{border-color:var(--green);color:var(--green)}
+  .opt.wrg .obadge{border-color:var(--red);color:var(--red)}
+  .otext{font-size:.875rem;line-height:1.6;color:var(--ink-2);padding-top:.05rem}
+  .opt.cor .otext{color:var(--green);font-weight:500}
+  .opt.wrg .otext{color:var(--red)}
+
+  /* ACTIONS */
+  .acts{display:flex;align-items:center;gap:.7rem;margin-top:1rem;flex-wrap:wrap}
+  .bcheck{padding:.55rem 1.35rem;background:var(--navy);color:#fff;font-size:.8rem;font-weight:500;border:none;border-radius:4px;cursor:pointer;transition:background .15s,opacity .15s;font-family:"Inter",sans-serif}
+  .bcheck:disabled{opacity:.3;cursor:not-allowed}
+  .bcheck:hover:not(:disabled){background:var(--navy-mid)}
+  .bnext{padding:.55rem 1.35rem;background:var(--gold);color:#fff;font-size:.8rem;font-weight:500;border:none;border-radius:4px;cursor:pointer;display:none;font-family:"Inter",sans-serif;transition:background .15s}
+  .bnext:hover{background:#b07a20}
+  .rbadge{font-size:.74rem;font-weight:600;padding:.28rem .65rem;border-radius:3px;display:none}
+  .rbadge.ok{display:inline-block;background:var(--green-lt);color:var(--green)}
+  .rbadge.fail{display:inline-block;background:var(--red-lt);color:var(--red)}
+
+  /* EXPLANATION */
+  .exp{display:none;margin-top:1rem;padding:.9rem 1rem .95rem;background:var(--bg);border-left:3px solid var(--gold);border-radius:0 4px 4px 0}
+  .exp.vis{display:block}
+  .explbl{font-size:.67rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin-bottom:.38rem}
+  .exptext{font-size:.855rem;line-height:1.7;color:var(--ink-2)}
+  .exptext strong{color:var(--ink);font-weight:600}
+  .exptext em{font-style:italic}
+
+  /* FINAL */
+  .final{display:none;background:var(--navy);color:#fff;border-radius:8px;padding:2.25rem 2rem;text-align:center;margin-top:1.5rem}
+  .final.vis{display:block}
+  .fscore{font-family:"Crimson Pro",serif;font-size:3.2rem;font-weight:600;color:var(--gold);line-height:1}
+  .flbl{font-size:.84rem;color:rgba(255,255,255,.5);margin:.3rem 0 1.2rem}
+  .fmsg{font-size:.82rem;color:rgba(255,255,255,.42);margin-bottom:1.5rem;max-width:400px;margin-left:auto;margin-right:auto}
+  .fgrid{display:flex;justify-content:center;gap:2rem;margin-bottom:1.5rem}
+  .fstat-n{font-size:1.8rem;font-weight:600}
+  .fstat-n.g{color:#6ee7a0}
+  .fstat-n.r{color:#f87171}
+  .fstat-l{font-size:.7rem;color:rgba(255,255,255,.35);margin-top:.15rem}
+  .breset{padding:.6rem 1.5rem;background:transparent;color:#fff;font-size:.8rem;font-weight:500;border:1.5px solid rgba(255,255,255,.28);border-radius:4px;cursor:pointer;font-family:"Inter",sans-serif;transition:background .15s}
+  .breset:hover{background:rgba(255,255,255,.08)}
+
+  @media(max-width:540px){
+    .hinner{grid-template-columns:1fr}
+    .hcode{display:none}
+    .main,.prog-wrap,.dots{padding:0 1rem}
+    .qhead,.qbody{padding-left:1rem;padding-right:1rem}
+    .situation{margin-left:1rem;margin-right:1rem}
+  }
+</style>
+</head>
+<body>
+
+<header class="exam-header">
+  <div class="hinner">
+    <div>
+      <p class="etag">EBR Secundaria &middot; &Aacute;rea: Ingl&eacute;s como Lengua Extranjera</p>
+      <h1 class="etitle">Practice Exercises Class 11 (16&ndash;20)</h1>
+      <p class="esub">Audio-Lingual Method &middot; Grammar-Translation Method &mdash; Metodolog&iacute;as Contextuales e H&iacute;bridas en ELT &middot; Nombramiento y Ascenso Docente</p>
+      <div class="meta-row">
+        <span class="mpill">5 questions</span>
+        <span class="mpill">Read carefully before answering</span>
+        <span class="mpill">Fries &amp; Lado &middot; Richards &amp; Rodgers &middot; MINEDU 2025</span>
+      </div>
+    </div>
+    <div class="hcode">
+      <div class="code-box">
+        <div class="code-top">Exercise Set</div>
+        <div class="code-val">C11&middot;16&ndash;20</div>
+        <div class="code-year">20 Ejercicios para Practicar</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="prog-wrap">
+  <div class="prog-top">
+    <span id="plbl">Question 1 of 5</span>
+    <span id="ppct">20%</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="pfill" style="width:20%"></div></div>
+</div>
+
+<div class="dots">
+  <div class="dot active" id="d1">16</div>
+  <div class="dot" id="d2">17</div>
+  <div class="dot" id="d3">18</div>
+  <div class="dot" id="d4">19</div>
+  <div class="dot" id="d5">20</div>
+</div>
+
+<main class="main">
+
+<!-- Q1 (Question 16) -->
+<div class="qcard active" id="q1">
+  <div class="situation">
+    <div class="situation-label">Read the following situation and answer questions 16 and 17</div>
+    <p>Rosa is teaching a lesson on greetings and classroom expressions to beginner students. She designs the following sequence:</p>
+    <ul>
+      <li>Rosa models a sentence: <em>&ldquo;Good morning, teacher!&rdquo;</em> and the whole class repeats it in chorus three times.</li>
+      <li>She then changes one word and asks students to repeat again: <em>&ldquo;Good afternoon, teacher!&rdquo;, &ldquo;Good evening, teacher!&rdquo;</em></li>
+      <li>Students practice in pairs, repeating the same patterns without variation.</li>
+      <li>Rosa corrects any deviation from the model immediately, asking students to repeat the correct form until it sounds natural.</li>
+    </ul>
+  </div>
+  <div class="qhead">
+    <p class="qnum">Question 16</p>
+    <p class="qstem">Which teaching methodology is Rosa applying?</p>
+  </div>
+  <div class="qbody">
+    <button class="opt" onclick="sel(this,'q1','A')"><span class="obadge">a</span><span class="otext">The Audio-Lingual Method, because the lesson is based on choral repetition, substitution drills and immediate correction of oral patterns.</span></button>
+    <button class="opt" onclick="sel(this,'q1','B')"><span class="obadge">b</span><span class="otext">Communicative Language Teaching, because students practice in pairs.</span></button>
+    <button class="opt" onclick="sel(this,'q1','C')"><span class="obadge">c</span><span class="otext">Task-Based Learning, because students complete a communicative activity.</span></button>
+    <div class="acts">
+      <button class="bcheck" id="q1-btn" disabled onclick="chk('q1','A',1)">Check answer</button>
+      <span class="rbadge" id="q1-rb"></span>
+      <button class="bnext" id="q1-nx" onclick="goTo(2)">Next &rarr;</button>
+    </div>
+    <div class="exp" id="q1-exp">
+      <p class="explbl">Correct answer: a &mdash; Explanation</p>
+      <p class="exptext">La secuencia de Rosa presenta los rasgos definitorios del ALM (Fries &amp; Lado, 1957): modelo del docente &rarr; repetici&oacute;n coral &rarr; ejercicio de sustituci&oacute;n (cambiar una palabra del patr&oacute;n) &rarr; pr&aacute;ctica en pares sin variaci&oacute;n real de contenido. No hay <em>information gap</em> ni prop&oacute;sito comunicativo genuino, por lo que no es CLT ni TBL. <strong>(Fries &amp; Lado, 1957)</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- Q2 (Question 17) -->
+<div class="qcard" id="q2">
+  <div class="situation">
+    <div class="situation-label">Situation (continued) &mdash; Rosa&rsquo;s greetings lesson</div>
+    <p>Recall that Rosa corrects any deviation from the model <strong>immediately</strong>, asking students to repeat the correct form until it sounds natural.</p>
+  </div>
+  <div class="qhead">
+    <p class="qnum">Question 17</p>
+    <p class="qstem">Why does Rosa correct errors immediately instead of waiting until the end of the activity?</p>
+  </div>
+  <div class="qbody">
+    <button class="opt" onclick="sel(this,'q2','A')"><span class="obadge">a</span><span class="otext">Because in CLT, accuracy is always more important than fluency.</span></button>
+    <button class="opt" onclick="sel(this,'q2','B')"><span class="obadge">b</span><span class="otext">Because Rosa is using the inductive principle of Task-Based Learning.</span></button>
+    <button class="opt" onclick="sel(this,'q2','C')"><span class="obadge">c</span><span class="otext">Because in the Audio-Lingual Method, errors are considered &ldquo;bad habits&rdquo; that must be corrected instantly before they become fixed, consistent with the behaviorist theory of language learning.</span></button>
+    <div class="acts">
+      <button class="bcheck" id="q2-btn" disabled onclick="chk('q2','C',2)">Check answer</button>
+      <span class="rbadge" id="q2-rb"></span>
+      <button class="bnext" id="q2-nx" onclick="goTo(3)">Next &rarr;</button>
+    </div>
+    <div class="exp" id="q2-exp">
+      <p class="explbl">Correct answer: c &mdash; Explanation</p>
+      <p class="exptext">El ALM se fundamenta en el conductismo de Skinner (1957): el idioma se aprende como un conjunto de h&aacute;bitos mec&aacute;nicos. Si un error no se corrige de inmediato, se &ldquo;fija&rdquo; como un h&aacute;bito incorrecto dif&iacute;cil de eliminar despu&eacute;s. Esto es opuesto al <em>delayed feedback</em> del CLT y al <em>Language Focus</em> inductivo del TBL. <strong>(Skinner, 1957; Fries &amp; Lado, 1957)</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- Q3 (Question 18) -->
+<div class="qcard" id="q3">
+  <div class="situation">
+    <div class="situation-label">Read the following situation and answer questions 18, 19 and 20</div>
+    <p>Fernando teaches a lesson based on a short story in English. He designs the following sequence:</p>
+    <ul>
+      <li>He writes the story on the board and translates it sentence by sentence into Spanish, asking students to copy both versions in their notebooks.</li>
+      <li>Students memorize a list of 15 new vocabulary words with their Spanish translations.</li>
+      <li>Fernando explains, in Spanish, the grammatical rule for the past tense used in the story, using sentence diagrams on the board.</li>
+      <li>As homework, students must translate five sentences from Spanish into English using the vocabulary they memorized.</li>
+    </ul>
+  </div>
+  <div class="qhead">
+    <p class="qnum">Question 18</p>
+    <p class="qstem">Which methodology does Fernando&rsquo;s sequence represent?</p>
+  </div>
+  <div class="qbody">
+    <button class="opt" onclick="sel(this,'q3','A')"><span class="obadge">a</span><span class="otext">Content-Based Learning, because the story is used as academic content.</span></button>
+    <button class="opt" onclick="sel(this,'q3','B')"><span class="obadge">b</span><span class="otext">The Grammar-Translation Method, because the lesson centers on sentence-by-sentence translation, memorization of vocabulary lists, and explicit grammar explanation in the L1.</span></button>
+    <button class="opt" onclick="sel(this,'q3','C')"><span class="obadge">c</span><span class="otext">The Lexical Approach, because students work with vocabulary from a text.</span></button>
+    <div class="acts">
+      <button class="bcheck" id="q3-btn" disabled onclick="chk('q3','B',3)">Check answer</button>
+      <span class="rbadge" id="q3-rb"></span>
+      <button class="bnext" id="q3-nx" onclick="goTo(4)">Next &rarr;</button>
+    </div>
+    <div class="exp" id="q3-exp">
+      <p class="explbl">Correct answer: b &mdash; Explanation</p>
+      <p class="exptext">El Grammar-Translation Method (Richards &amp; Rodgers, 2001), cuyos exponentes hist&oacute;ricos incluyen a Seidenst&uuml;cker, Plotz, Ollendorff y Meidinger, fue dise&ntilde;ado para ense&ntilde;ar lenguas cl&aacute;sicas como el lat&iacute;n. Su transposici&oacute;n al ingl&eacute;s mantiene la misma l&oacute;gica: dominar la gram&aacute;tica y la literatura de la L2 a trav&eacute;s de la L1, sin priorizar la comunicaci&oacute;n oral ni situaciones reales. <strong>(Richards &amp; Rodgers, 2001)</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- Q4 (Question 19) -->
+<div class="qcard" id="q4">
+  <div class="situation">
+    <div class="situation-label">Situation (continued) &mdash; Fernando&rsquo;s translation lesson</div>
+    <p>Consider the overall balance of skills practiced throughout Fernando&rsquo;s sequence: reading, translating, memorizing, and writing homework sentences.</p>
+  </div>
+  <div class="qhead">
+    <p class="qnum">Question 19</p>
+    <p class="qstem">Which language skill is <strong>MOST</strong> clearly neglected in Fernando&rsquo;s lesson?</p>
+  </div>
+  <div class="qbody">
+    <button class="opt" onclick="sel(this,'q4','A')"><span class="obadge">a</span><span class="otext">Reading comprehension, because the story is too short.</span></button>
+    <button class="opt" onclick="sel(this,'q4','B')"><span class="obadge">b</span><span class="otext">Vocabulary acquisition, because the list is too long.</span></button>
+    <button class="opt" onclick="sel(this,'q4','C')"><span class="obadge">c</span><span class="otext">Oral communication, since the entire sequence is based on reading, translating and writing, without any speaking practice.</span></button>
+    <div class="acts">
+      <button class="bcheck" id="q4-btn" disabled onclick="chk('q4','C',4)">Check answer</button>
+      <span class="rbadge" id="q4-rb"></span>
+      <button class="bnext" id="q4-nx" onclick="goTo(5)">Next &rarr;</button>
+    </div>
+    <div class="exp" id="q4-exp">
+      <p class="explbl">Correct answer: c &mdash; Explanation</p>
+      <p class="exptext">El Grammar-Translation Method prioriza la lectura, la traducci&oacute;n y la gram&aacute;tica escrita, dejando la habilidad oral pr&aacute;cticamente sin trabajar. En ning&uacute;n momento de la secuencia de Fernando los estudiantes hablan en ingl&eacute;s ni practican pronunciaci&oacute;n o interacci&oacute;n oral. <strong>(Richards &amp; Rodgers, 2001)</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- Q5 (Question 20) -->
+<div class="qcard" id="q5">
+  <div class="situation">
+    <div class="situation-label">Situation (continued) &mdash; Fernando&rsquo;s translation lesson</div>
+    <p>A colleague argues that Fernando&rsquo;s lesson would be poorly evaluated in the MINEDU promotion exam.</p>
+  </div>
+  <div class="qhead">
+    <p class="qnum">Question 20</p>
+    <p class="qstem">Which of the following <strong>BEST</strong> explains why?</p>
+  </div>
+  <div class="qbody">
+    <button class="opt" onclick="sel(this,'q5','A')"><span class="obadge">a</span><span class="otext">Because MINEDU evaluates communicative competence &mdash; the ability to use English appropriately in real situations &mdash; and Fernando&rsquo;s lesson only measures grammatical accuracy and translation skills, with no authentic communicative outcome.</span></button>
+    <button class="opt" onclick="sel(this,'q5','B')"><span class="obadge">b</span><span class="otext">Because the lesson uses too much vocabulary for one session.</span></button>
+    <button class="opt" onclick="sel(this,'q5','C')"><span class="obadge">c</span><span class="otext">Because the story used is not related to any curricular subject.</span></button>
+    <div class="acts">
+      <button class="bcheck" id="q5-btn" disabled onclick="chk('q5','A',5)">Check answer</button>
+      <span class="rbadge" id="q5-rb"></span>
+      <button class="bnext" id="q5-nx" onclick="showFinal()">See results &rarr;</button>
+    </div>
+    <div class="exp" id="q5-exp">
+      <p class="explbl">Correct answer: a &mdash; Explanation</p>
+      <p class="exptext">El MINEDU eval&uacute;a competencia comunicativa (Hymes, 1972; Canale &amp; Swain, 1980), no solo correcci&oacute;n gramatical aislada. Una secuencia como la de Fernando &mdash; centrada en traducir y memorizar &mdash; no genera ninguna evidencia de que el estudiante pueda comunicarse en ingl&eacute;s en una situaci&oacute;n real, que es precisamente el criterio que el examen de ascenso privilegia. <strong>(Hymes, 1972; Canale &amp; Swain, 1980)</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div class="final" id="final">
+  <div class="fscore" id="fscore">— / 5</div>
+  <div class="flbl">Final result &middot; Practice Exercises Class 11 &middot; Questions 16&ndash;20</div>
+  <div class="fmsg" id="fmsg"></div>
+  <div class="fgrid">
+    <div><div class="fstat-n g" id="fok">0</div><div class="fstat-l">Correct</div></div>
+    <div><div class="fstat-n r" id="ferr">0</div><div class="fstat-l">Incorrect</div></div>
+  </div>
+  <button class="breset" onclick="resetAll()">Try again</button>
+</div>
+
+</main>
+
+<script>
+const ans={};
+const cor={q1:"A",q2:"C",q3:"B",q4:"C",q5:"A"};
+
+function sel(el,qid,letter){
+  const c=document.getElementById(qid);
+  if(c.classList.contains("locked"))return;
+  c.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel"));
+  el.classList.add("sel");
+  ans[qid]=letter;
+  document.getElementById(qid+"-btn").disabled=false;
+}
+
+function chk(qid,correct,n){
+  const c=document.getElementById(qid);
+  if(c.classList.contains("locked"))return;
+  c.classList.add("locked");
+  const ch=ans[qid];
+  const isOk=ch===correct;
+  c.querySelectorAll(".opt").forEach(o=>{
+    o.classList.add("locked");
+    const l=o.querySelector(".obadge").textContent.trim().toUpperCase();
+    if(l===correct) o.classList.add("cor");
+    else if(l===ch&&!isOk) o.classList.add("wrg");
+  });
+  const rb=document.getElementById(qid+"-rb");
+  document.getElementById(qid+"-btn").style.display="none";
+  rb.textContent=isOk?"✓ Correct":"✗ Incorrect";
+  rb.className="rbadge "+(isOk?"ok":"fail");
+  document.getElementById(qid+"-exp").classList.add("vis");
+  document.getElementById(qid+"-nx").style.display="inline-block";
+  document.getElementById("d"+n).className="dot "+(isOk?"ok":"fail");
+}
+
+function goTo(n){
+  document.querySelectorAll(".qcard").forEach(c=>c.classList.remove("active"));
+  document.getElementById("q"+n).classList.add("active");
+  document.querySelectorAll(".dot").forEach((d,i)=>{
+    if(!d.classList.contains("ok")&&!d.classList.contains("fail"))
+      d.className="dot"+(i===n-1?" active":"");
+  });
+  const pct=Math.round(n/5*100);
+  document.getElementById("pfill").style.width=pct+"%";
+  document.getElementById("plbl").textContent="Question "+n+" of 5";
+  document.getElementById("ppct").textContent=pct+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function showFinal(){
+  document.querySelectorAll(".qcard").forEach(c=>c.classList.remove("active"));
+  document.getElementById("pfill").style.width="100%";
+  document.getElementById("plbl").textContent="Completed";
+  document.getElementById("ppct").textContent="100%";
+  let s=0;
+  Object.keys(cor).forEach(k=>{if(ans[k]===cor[k])s++;});
+  const e=5-s,pct=Math.round(s/5*100);
+  document.getElementById("fscore").textContent=s+" / 5";
+  document.getElementById("fok").textContent=s;
+  document.getElementById("ferr").textContent=e;
+  const msgs=["You need to review the Audio-Lingual and Grammar-Translation methods before the exam.","Good attempt. Strengthen the concepts where you made mistakes.","Very good result. Review the questions you got wrong.","Perfect score! You have mastered these questions."];
+  document.getElementById("fmsg").textContent=msgs[pct===100?3:pct>=80?2:pct>=60?1:0];
+  document.getElementById("final").classList.add("vis");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function resetAll(){
+  Object.keys(ans).forEach(k=>delete ans[k]);
+  for(let i=1;i<=5;i++){
+    const c=document.getElementById("q"+i);
+    c.classList.remove("locked","active");
+    c.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel","cor","wrg","locked"));
+    const btn=c.querySelector(".bcheck");btn.disabled=true;btn.style.display="";
+    const rb=c.querySelector(".rbadge");rb.className="rbadge";rb.textContent="";
+    c.querySelector(".exp").classList.remove("vis");
+    c.querySelector(".bnext").style.display="none";
+  }
+  document.getElementById("q1").classList.add("active");
+  document.querySelectorAll(".dot").forEach((d,i)=>{d.className="dot"+(i===0?" active":"");});
+  document.getElementById("final").classList.remove("vis");
+  document.getElementById("pfill").style.width="20%";
+  document.getElementById("plbl").textContent="Question 1 of 5";
+  document.getElementById("ppct").textContent="20%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>
